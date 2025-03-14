@@ -1,11 +1,14 @@
 package com.example.sof3012_sd20102.B1_Hibernate.servlet;
 
+import com.example.sof3012_sd20102.B1_Hibernate.entity.Category1;
 import com.example.sof3012_sd20102.B1_Hibernate.repository.CategoryRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
+import org.apache.commons.beanutils.BeanUtils;
 
 import java.io.IOException;
 
@@ -76,30 +79,61 @@ public class CategoryServlet extends HttpServlet {
     private void updateCate(HttpServletRequest request, HttpServletResponse response) {
     }
 
+    @SneakyThrows
     private void addCate(HttpServletRequest request, HttpServletResponse response) {
+        // Lay gia tri o input -> lay thong qua thuoc tinh name => getParameter
+        // Bn o input => LAY 1 LAN DUY NHAT: BeanUtils
+        Category1 cate = new Category1();
+        BeanUtils.populate(cate,request.getParameterMap());
+        repository.addCate(cate);
+        response.sendRedirect("/category/hien-thi");
     }
 
     private void search(HttpServletRequest request, HttpServletResponse response) {
     }
 
-    private void viewAddCate(HttpServletRequest request, HttpServletResponse response) {
+    private void viewAddCate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/buoi1/add-category.jsp").forward(request,response);
     }
 
-    private void deleteCate(HttpServletRequest request, HttpServletResponse response) {
+    private void deleteCate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // B1: Lay gia tri vua truyen tren duong dan => getParameter
+        String id = request.getParameter("a1");
+        // B3: Goi ham xoa
+        Category1 cate = repository.getOne(Long.valueOf(id));
+        repository.deleteCate(cate);
+        // B4: Quay ve trang hien thi
+        response.sendRedirect("/category/hien-thi");
     }
 
-    private void viewUpdateCate(HttpServletRequest request, HttpServletResponse response) {
+    private void viewUpdateCate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // B1: Lay gia tri vua truyen tren duong dan => getParameter
+        String id = request.getParameter("id");
+        // B2: Khoi tao doi tuong cate
+        Category1 cate = repository.getOne(Long.valueOf(id));
+        // B3: Day doi tuong cate sang trang moi
+        request.setAttribute("cate1",cate);
+        // B4: Chuyen trang
+        request.getRequestDispatcher("/buoi1/update-cate.jsp").forward(request,response);
     }
 
-    private void detailCate(HttpServletRequest request, HttpServletResponse response) {
+    private void detailCate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // B1: Lay gia tri vua truyen tren duong dan => getParameter
+        String id = request.getParameter("a");
+        // B2: Khoi tao doi tuong cate
+        Category1 cate = repository.getOne(Long.valueOf(id));
+        // B3: Day doi tuong cate sang trang moi
+        request.setAttribute("cate1",cate);
+        // B4: Chuyen trang
+        request.getRequestDispatcher("/buoi1/detail-cate.jsp").forward(request,response);
     }
 
     private void hienThiCategory(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Day du lieu tu servlet -> sang view : request.setAttribute
 //        int a = 5;
-        request.setAttribute("listCate1",repository.getAll());
+        request.setAttribute("listCate1", repository.getAll());
         // Chuyen trang di
-        request.getRequestDispatcher("/buoi1/categorys.jsp").forward(request,response);
+        request.getRequestDispatcher("/buoi1/categorys.jsp").forward(request, response);
     }
 
 }

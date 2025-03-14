@@ -7,9 +7,9 @@ contentType="text/html;charset=UTF-8" language="java" %>
   </head>
   <body>
     <form action="">
-      Cate code: <input type="text" name="mssv" />
+      Cate code: <input type="text" name="mssv" value="${cate1.categoryCode}"/>
       <br />
-      Cate name: <input type="text" name="ten" />
+      Cate name: <input type="text" name="ten" value="${cate1.categoryName}"/>
       <br />
       <button>Update</button>
     </form>

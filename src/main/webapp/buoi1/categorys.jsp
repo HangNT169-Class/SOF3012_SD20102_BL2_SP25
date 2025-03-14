@@ -10,7 +10,7 @@
       <button type="submit">Search</button>
     </form>
     <br />
-    <button><a href="">Add Cate</a></button>
+    <button><a href="/category/view-add">Add Cate</a></button>
     <table>
       <thead>
         <tr>
@@ -29,6 +29,11 @@
           <td>${sv.id}</td>
           <td>${sv.categoryCode}</td>
           <td>${sv.categoryName}</td>
+          <td>
+            <a href="/category/delete?a1=${sv.id}">Delete</a>
+            <a href="/category/view-update?id=${sv.id}">Update</a>
+            <a href="/category/detail?a=${sv.id}">Detail</a>
+          </td>
         </tr>
       </c:forEach>
       </tbody>
