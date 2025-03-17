@@ -2,6 +2,7 @@ package com.example.sof3012_sd20102.B1_Hibernate.repository;
 
 import com.example.sof3012_sd20102.B1_Hibernate.entity.Category1;
 import com.example.sof3012_sd20102.B1_Hibernate.util.HibernateUtil1;
+import jakarta.persistence.Query;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -74,8 +75,47 @@ public class CategoryRepository {
         }
     }
 
+    /**
+     * Tim kiem theo ten trong ds cate
+     */
+    // String categoryCode
+    public List<Category1> searchByName(String name) {
+        // B1: Viet HQL
+        String hql = "SELECT c FROM Category1 c WHERE c.categoryName = :a";
+        // B2: Tao cau Query
+        Query q = s.createQuery(hql);
+        // B3: Set gia tri cho dau ?
+        q.setParameter("a", name);
+//        q.setParameter(2, categoryCode);
+        // B4: Tra ve du lieu
+        return q.getResultList(); // tra ve 1 danh sach
+        // tra ve 1 doi tuong => getSingleResult
+    }
+
+    // getOne => search
+    public Category1 getOneC2(Long id) {
+        String hql = "SELECT c FROM Category1 c WHERE c.id = ?1";
+        Query q = s.createQuery(hql);
+        q.setParameter(1, id);
+        return (Category1) q.getSingleResult();
+    }
+
+    public List<Category1> sapXep() {
+        String hql = "select c from Category1 c order by c.categoryName";
+        Query q = s.createQuery(hql);
+        return q.getResultList();
+    }
+
+    public List<Category1> timTheoKhoang(Long idMin,Long idMax){
+        String hql="SELECT c FROM Category1 c WHERE c.id>=?1 AND c.id <=?2 ORDER BY c.categoryName ,c.id DESC";
+        Query q = s.createQuery(hql);
+        q.setParameter(1,idMin);
+        q.setParameter(2,idMax);
+        return q.getResultList();
+    }
+
     public static void main(String[] args) {
-        System.out.println(new CategoryRepository().getAll());
-//        System.out.println(new CategoryRepository().getOne(1L));
+        //System.out.println(new CategoryRepository().searchByName("Cate1"));
+        System.out.println(new CategoryRepository().timTheoKhoang(2L,10L));
     }
 }

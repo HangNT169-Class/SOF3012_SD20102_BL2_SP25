@@ -1,5 +1,7 @@
 package com.example.sof3012_sd20102.B1_Hibernate.util;
+
 import com.example.sof3012_sd20102.B1_Hibernate.entity.Category1;
+import com.example.sof3012_sd20102.B1_Hibernate.entity.Product;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -9,8 +11,8 @@ import org.hibernate.service.ServiceRegistry;
 import java.util.Properties;
 
 public class HibernateUtil1 {
-//    Ket noi CSDL
-private static final SessionFactory FACTORY;
+    //    Ket noi CSDL
+    private static final SessionFactory FACTORY;
 
     static {
         Configuration conf = new Configuration();
@@ -26,6 +28,7 @@ private static final SessionFactory FACTORY;
         conf.setProperties(properties);
         // Dang ky vs hibernate
         conf.addAnnotatedClass(Category1.class);
+        conf.addAnnotatedClass(Product.class);
 
         ServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .applySettings(conf.getProperties()).build();
