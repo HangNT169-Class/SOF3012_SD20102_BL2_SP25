@@ -113,9 +113,44 @@ public class CategoryRepository {
         q.setParameter(2,idMax);
         return q.getResultList();
     }
+    // Phan trang
+    // C1: Phan trang SQL
 
+    /**
+     *
+     * @param pageSize: so luong max phan tu tren 1 trang
+     * @param pageNo: so trang : VD: trang thu 1 (so0...)
+     * @return tra ra danh sach phan trang
+     */
+    public List<Category1>phanTrangSQL(Integer pageSize, Integer pageNo){
+        // B1: Tinh so offset : Bo qua phan tu thu may
+        // Trang dau bat dau bang 0
+        Integer offset = pageNo * pageSize;
+        // B2: Viet cau lenh SQL
+        String sql  = "SELECT * FROM category\n" +
+                "ORDER by id\n" +
+                "OFFSET ?1 ROWS \n" +
+                "FETCH NEXT ?2 row ONLY ";
+        // B3: Tao Query: Truy van SQL => native query
+        Query q = s.createNativeQuery(sql, Category1.class);
+        q.setParameter(1, offset);
+        q.setParameter(2, pageSize);
+        return q.getResultList();
+    }
+
+    public List<Category1>phanTrangHQL(Integer pageSize, Integer pageNo){
+        // B1: Tinh so offset : Bo qua phan tu thu may
+//        // Trang dau bat dau bang 0
+//        Integer offset = pageNo * pageSize;
+//        // B2: Tao query
+        Query q = s.createQuery("FROM Category1 ");
+        q.setFirstResult(pageNo * pageSize);
+        q.setMaxResults(pageSize);
+        return q.getResultList();
+    }
     public static void main(String[] args) {
+        System.out.println(new CategoryRepository().phanTrangHQL(5,0));
         //System.out.println(new CategoryRepository().searchByName("Cate1"));
-        System.out.println(new CategoryRepository().timTheoKhoang(2L,10L));
+//        System.out.println(new CategoryRepository().timTheoKhoang(2L,10L));
     }
 }
