@@ -149,8 +149,9 @@ public class CategoryRepository {
         return q.getResultList();
     }
     public static void main(String[] args) {
-        System.out.println(new CategoryRepository().phanTrangHQL(5,0));
+//        System.out.println(new CategoryRepository().phanTrangHQL(5,0));
         //System.out.println(new CategoryRepository().searchByName("Cate1"));
 //        System.out.println(new CategoryRepository().timTheoKhoang(2L,10L));
+        System.out.println(new CategoryRepository().getAll());
     }
 }
